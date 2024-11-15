@@ -21,8 +21,18 @@ export default function App() {
             setIsValueValid(true);
             setValue(promptValue);
         }
-
     }
+
+    const onAddButtonClick = () => {
+        if  (isValueValid) {
+            const updatedList = [...list, { id: Date.now(), value }]
+            setList(updatedList)
+        } 
+        setValue('')
+        setError('')
+        setIsValueValid(false)
+}
+
 
   return (
     <>
@@ -35,14 +45,18 @@ export default function App() {
           <div className={styles.error}>{error}</div>
           <div className={styles.buttonsContainer}>
               <button onClick={onInputButtonClick} className={styles.button}>Ввести новое</button>
-              <button className={styles.button} disabled={!isValueValid}>Добавить в список</button>
+              <button onClick={onAddButtonClick} className={styles.button} disabled={!isValueValid}>Добавить в список</button>
           </div>
           <div className={styles.listContainer}>
               <h2 className={styles.listHeading}>Список:</h2>
-              <p className={styles.noMarginText}>Нет добавленных элементов</p>
-              <ul className={styles.list}>
-                  <li className={styles.listItem}>Первый элемент</li>
-              </ul>
+              {
+              list.length === 0 ? 
+              (<p className={styles.noMarginText}>Нет добавленных элементов</p>) 
+              :
+              (<ul className={styles.list}>
+                    {list.map(item => (<li key={item.id} className={styles.listItem}>{item.value}</li>))}
+              </ul>)
+            }
           </div>
       </div>
     </>
